@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv) {
 
-  printf(aom_codec_version_str());
+  printf("Libaom version is %s \n", aom_codec_version_str());
 
   return EXIT_SUCCESS;
 }
