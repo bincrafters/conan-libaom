@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -28,6 +29,10 @@ class LibnameConan(ConanFile):
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
     _cmake = None
+
+    def configure(self):
+        if self.settings.os == "Windows" and self.options.shared:
+          raise ConanInvalidConfiguration("Windows DLL builds not supported yet")
 
     def config_options(self):
         if self.settings.os == 'Windows':
