@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
-import os
 
 
 class LibnameConan(ConanFile):
@@ -35,10 +34,6 @@ class LibnameConan(ConanFile):
     def source(self):
         download_source = "https://download.videolan.org/contrib/aom/"
         tools.get("{0}/aom-v{1}.errata.1.tar.gz".format(download_source, self.version), sha256="a4abc492a455d83869da28096bd0e807b949769d0cc38c5489ff04aac4fc7724")
-        extracted_dir = self.name + "-" + self.version
-
-        # Rename to "source_subfolder" is a convention to simplify later steps
-        #os.rename(extracted_dir, self._source_subfolder)
 
     def _configure_cmake(self):
         cmake = CMake(self, set_cmake_flags=True)
