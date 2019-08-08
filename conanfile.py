@@ -26,6 +26,7 @@ class LibnameConan(ConanFile):
     # Custom attributes for Bincrafters recipe conventions
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
+    _cmake = None
 
     def config_options(self):
         if self.settings.os == 'Windows':
@@ -36,14 +37,16 @@ class LibnameConan(ConanFile):
         tools.get("{0}/aom-v{1}.errata.1.tar.gz".format(download_source, self.version), sha256="a4abc492a455d83869da28096bd0e807b949769d0cc38c5489ff04aac4fc7724")
 
     def _configure_cmake(self):
-        cmake = CMake(self, set_cmake_flags=True)
-        cmake.definitions["ENABLE_TESTS"] = False
-        cmake.definitions["ENABLE_TESTDATA"] = False
-        cmake.definitions["ENABLE_EXAMPLES"] = False
-        cmake.definitions["ENABLE_DOCS"] = False
-        cmake.definitions["ENABLE_TOOLS"] = False
-        cmake.configure(build_folder=self._build_subfolder)
-        return cmake
+        if not self._cmake:
+            cmake = CMake(self, set_cmake_flags=True)
+            cmake.definitions["ENABLE_TESTS"] = False
+            cmake.definitions["ENABLE_TESTDATA"] = False
+            cmake.definitions["ENABLE_EXAMPLES"] = False
+            cmake.definitions["ENABLE_DOCS"] = False
+            cmake.definitions["ENABLE_TOOLS"] = False
+            cmake.configure(build_folder=self._build_subfolder)
+            self._cmake = cmake
+        return self._cmake
 
     def build(self):
         cmake = self._configure_cmake()
