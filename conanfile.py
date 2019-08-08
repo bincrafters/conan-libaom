@@ -50,6 +50,7 @@ class LibnameConan(ConanFile):
             cmake.definitions["ENABLE_EXAMPLES"] = False
             cmake.definitions["ENABLE_DOCS"] = False
             cmake.definitions["ENABLE_TOOLS"] = False
+            cmake.definitions["AOM_BUILD_CMAKE_MSVC_RUNTIME_CMAKE_"] = 1
             cmake.configure(build_folder=self._build_subfolder)
             self._cmake = cmake
         return self._cmake
