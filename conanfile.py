@@ -39,8 +39,10 @@ class LibnameConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        download_source = "https://download.videolan.org/contrib/aom/"
-        tools.get("{0}/aom-v{1}.errata.1.tar.gz".format(download_source, self.version), sha256="a4abc492a455d83869da28096bd0e807b949769d0cc38c5489ff04aac4fc7724")
+        os.makedirs(self._source_subfolder)
+        with tools.chdir(self._source_subfolder):
+            download_source = "https://download.videolan.org/contrib/aom/"
+            tools.get("{0}/aom-v{1}.errata.1.tar.gz".format(download_source, self.version), sha256="a4abc492a455d83869da28096bd0e807b949769d0cc38c5489ff04aac4fc7724")
 
     def _configure_cmake(self):
         if not self._cmake:
@@ -60,9 +62,9 @@ class LibnameConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE", dst="licenses", src=".")
+        self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
         if self.settings.compiler == "Visual Studio":
-            self.copy(pattern="*.h", src="aom", dst=os.path.join("include", "aom"))
+            self.copy(pattern="*.h", src=os.path.join(self._source_subfolder, "aom"), dst=os.path.join("include", "aom"))
             self.copy(pattern="*.lib", src=".", dst="lib", keep_path=False)
             self.copy(pattern="*.dll", src=".", dst="bin", keep_path=False)
         else:
