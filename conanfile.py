@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
+import os
 
 
 class LibnameConan(ConanFile):
@@ -53,9 +54,14 @@ class LibnameConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
-        cmake = self._configure_cmake()
-        cmake.install()
+        self.copy(pattern="LICENSE", dst="licenses", src=".")
+        if self.settings.compiler == "Visual Studio":
+            self.copy(pattern="*.h", src="aom", dst=os.path.join("include", "aom"))
+            self.copy(pattern="*.lib", src=".", dst="lib", keep_path=False)
+            self.copy(pattern="*.dll", src=".", dst="bin", keep_path=False)
+        else:
+            cmake = self._configure_cmake()
+            cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
