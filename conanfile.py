@@ -2,6 +2,7 @@
 
 from conans import ConanFile, CMake, tools
 from conans.errors import ConanInvalidConfiguration
+from conans.model.version import Version
 import os
 
 
@@ -31,8 +32,11 @@ class LibnameConan(ConanFile):
     _cmake = None
 
     def configure(self):
+        compiler_version = Version(self.settings.compiler.version.value)
         if self.settings.os == "Windows" and self.options.shared:
           raise ConanInvalidConfiguration("Windows DLL builds not supported yet")
+        if self.settings.compiler == "Visual Studio" and compiler_version < "15":
+          raise ConanInvalidConfiguration("Visual Studio 2015 and earlier aren't supported")
 
     def config_options(self):
         if self.settings.os == 'Windows':
