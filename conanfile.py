@@ -12,7 +12,6 @@ class LibnameConan(ConanFile):
     topics = ("conan", "libaom", "media","encoding")
     url = "https://github.com/bincrafters/conan-libaom"
     homepage = "https://aomedia.googlesource.com/aom"
-    author = "Bincrafters <bincrafters@gmail.com>"
     license = "BSD-2-Clause-FreeBSD"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
     exports = ["LICENSE.md"]      # Packages the license for the conanfile.py
     # Remove following lines if the target lib does not use cmake.
