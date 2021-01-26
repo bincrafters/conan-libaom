@@ -8,22 +8,17 @@ class LibnameConan(ConanFile):
     name = "libaom"
     version = "1.0.0"
     description = "Keep it short"
-    # topics can get used for searches, GitHub topics, Bintray tags etc. Add here keywords about the library
-    topics = ("conan", "libaom", "media","encoding")
+    topics = ("libaom", "media","encoding")
     url = "https://github.com/bincrafters/conan-libaom"
     homepage = "https://aomedia.googlesource.com/aom"
-    license = "BSD-2-Clause-FreeBSD"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
-    exports = ["LICENSE.md"]      # Packages the license for the conanfile.py
-    # Remove following lines if the target lib does not use cmake.
+    license = "BSD-2-Clause-FreeBSD"
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
 
-    # Options may need to change depending on the packaged library.
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    # Custom attributes for Bincrafters recipe conventions
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
     _cmake = None
